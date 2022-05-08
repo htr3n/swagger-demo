@@ -234,7 +234,7 @@
                             <resources>
                                 <resource>
                                     <directory>${project.build.directory}/swagger-ui-${version.org.swagger.ui}/dist</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <excludes>
                                         <exclude>swagger-initializer.js</exclude>
                                     </excludes>
