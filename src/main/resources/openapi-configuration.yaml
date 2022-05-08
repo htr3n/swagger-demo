@@ -4,8 +4,20 @@ prettyPrint: true
 cacheTTL: 0
 openAPI:
   info:
-    version: '1.0'
+    version: '0.0.1'
     title: Swagger Demo
     description: 'This is a demo Swagger'
     contact:
       email: 'admin@infomedix.com.au'
+components:
+  securitySchemes:
+    basicAuth: # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+security:
+  - basicAuth: [ ]
+  - cookieAuth: [ ]
