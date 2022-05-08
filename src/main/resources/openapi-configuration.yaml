@@ -1,0 +1,11 @@
+resourcePackages:
+  - au.com.infomedix.rest.swagger.resources
+prettyPrint: true
+cacheTTL: 0
+openAPI:
+  info:
+    version: '1.0'
+    title: Swagger Demo
+    description: 'This is a demo Swagger'
+    contact:
+      email: 'admin@infomedix.com.au'
