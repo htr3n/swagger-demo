@@ -15,7 +15,7 @@ const BaseUrlSettingPlugin = (system) => ({
   }
 });
 
-window.onload = function () {
+window.onload = () => {
   const base_url = window.location.origin + window.location.pathname;
   const base_url_no_ending_slash = base_url.replace(/\/$/, '');
   window.ui = SwaggerUIBundle({
