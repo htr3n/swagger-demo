@@ -23,32 +23,36 @@ The core part can be integrated into JAX-RS project such as RESTEasy 3.x provide
 </dependencies>
 ```
 
-2. Create a YAML configuration `src/main/resources/openapi-configuration.yaml`
+2. Create a Java class, namely, `MainApp`, that extends `javax.ws.rs.core.Application` to initialize RESTEasy APIs. Add the annotation
+   `@javax.ws.rs.ApplicationPath("/api")` to tell RESTEasy to start the REST endpoints under the sub-path `/api` because Swagger will take over the root context path `/`. 
 
-```yaml
-resourcePackages:
-  - au.com.infomedix.rest.swagger.resources
-prettyPrint: true
-cacheTTL: 0
-openAPI:
-  info:
-    version: '1.0'
-    title: Swagger Demo
-    description: 'This is a demo Swagger'
-    contact:
-      email: 'admin@infomedix.com.au'
+```java
+@javax.ws.rs.ApplicationPath("/api")
+public class MainApp extends javax.ws.rs.core.Application {
+    // ...
+}
 ```
 
-* The directive `resourcePackages` contains a list of all packages that contain JAX-RS resources to be scanned
-
-## Swagger UI Part
+## Swagger UI Configuration
 
 Swagger UI is a HTML/CSS/JavaScript library that can parse the JSON/YAML outputs of the core part and display a nice UI to explore and interact with the JAX-RS resources.
 
-1. Create an `swagger-initializer.js` adapted from [Swagger UI installation guide](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/installation.md) (see `src/main/webapp/swagger-initializer.js`). The current version of Swagger UI does not interpret correctly the URL of the JAX-RS server, hence we need [a hack](https://stackoverflow.com/a/71210264/339302) to adjust it to the correct URL.
+1. Add the annotation `@io.swagger.v3.oas.annotations.OpenAPIDefinition` to MainApp in order to initialize Swagger OpenAPI specification. For more details on `@OpenAPIDefinition`, refer
+   to [Swagger 2.x documentation](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations#openapi-annotations).
+
+```java
+@io.swagger.v3.oas.annotations.OpenAPIDefinition(/*...*/)
+@javax.ws.rs.ApplicationPath("/api")
+public class MainApp extends javax.ws.rs.core.Application {
+}
+```
+
+2. Create an `swagger-initializer.js` adapted from [Swagger UI installation guide](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/installation.md) (see `src/main/webapp/swagger-initializer.js`). The current version of Swagger UI does not interpret correctly the URL of the JAX-RS server, hence we need [a hack](https://stackoverflow.com/a/71210264/339302) to adjust it to the correct URL.
 2. Adjust the expected version of Swagger UI in `<version.org.swagger.ui>4.11.0</version.org.swagger.ui>`
 3. The [maven-download-plugin](https://github.com/maven-download-plugin/maven-download-plugin) will download and unpack the Swagger UI release package with the specified version.
 4. The Maven `maven-resources-plugin` will copy the Swagger prebuilt resources from `dist` excluding the `swagger-initializer.js` because we use our own custom version.
+
+3. Add RESTEasy endpoint class, e.g. `UserResource` and use Swagger OpenAPI annotations to help generating the  documentation.
 
 ## Build and Deploy
 

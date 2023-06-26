@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>au.com.infomedix.rest</groupId>
+    <groupId>org.example</groupId>
     <artifactId>swagger-demo</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
@@ -183,19 +183,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <useCache>true</useCache>
-                    <archiveClasses>false</archiveClasses>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>download-maven-plugin</artifactId>
                 <version>${plugin.version.maven.download}</version>
@@ -238,6 +225,38 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${plugin.version.spotless-maven-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>code-format-apply</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>code-format-check</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <java>
+                        <!-- apply google-java-format and reflow long strings -->
+                        <googleJavaFormat>
+                            <!-- GJF 1.7 is the latest version that support JDK 1.8 -->
+                            <version>1.7</version>
+                            <style>GOOGLE</style>
+                        </googleJavaFormat>
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
             </plugin>
             <!--
             https://maven.apache.org/enforcer/maven-enforcer-plugin/
